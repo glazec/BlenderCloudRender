@@ -8,7 +8,7 @@ import json
 def render():
     frame = settings['Frame']
     fileName = settings['BlenderFile']
-    os.system('blender -b {fileName} -o {output} -f {frame} > scriptLog'.format(fileName=fileName,frame=frame,output=fileName))
+    os.system('blender -b {fileName} -o {output} -f {frame} > script.log'.format(fileName=fileName,frame=frame,output=fileName))
 
 
 # save image
