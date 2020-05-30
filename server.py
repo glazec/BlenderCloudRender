@@ -38,6 +38,6 @@ def deleteServer():
 
 if __name__ == "__main__":
     render()
-    # saveBackblaze()
-    # deleteServer()
+    saveBackblaze()
+    deleteServer()
     
