@@ -2,19 +2,20 @@ import os
 import requests
 import sys
 import subprocess
+import json
 
 # render
 def render():
-    frame = os.environ.get('Frame')
-    fileName = os.environ.get('BlenderFile')
-    os.system('blender -b {fileName} -o {output}.png -f {frame} > scriptLog'.format(fileName=fileName,frame=frame,output=fileName.split('.')[0]))
+    frame = settings['Frame']
+    fileName = settings['BlenderFile']
+    os.system('blender -b {fileName} -o {output} -f {frame} > scriptLog'.format(fileName=fileName,frame=frame,output=fileName.split('.')[0]))
 
 
 # save image
 def saveBackblaze():
     print('Uploading File to BackBlaze')
     files = getUploadFile()
-    os.system('b2 authorize-account {id} {key}'.format(id=os.environ.get('B2Id'),key=os.environ.get('B2Key')))
+    os.system('b2 authorize-account {id} {key}'.format(id=settings['B2Id'],key=settings['B2Key']))
     for i in files:
         os.system('b2 upload-file {bucketName} {localFilePath} {remoteFileName}'.format(bucketName='blender-cloud',localFilePath='/root/'+i,remoteFileName=i))
 
@@ -26,8 +27,8 @@ def getUploadFile():
     
 
 def deleteServer():
-    url = "https://api.linode.com/v4/linode/instances/{linodeId}".format(linodeId=os.environ.get('LinodeId'))
-    headers = {"Authorization": "Bearer "+os.environ.get('LinodeToken'),
+    url = "https://api.linode.com/v4/linode/instances/{linodeId}".format(linodeId=settings['LinodeId'])
+    headers = {"Authorization": "Bearer "+settings['LinodeToken'],
                "Content-Type": "application/json"}
     response = requests.delete(url, headers=headers)
     if response.status_code == 200:
@@ -37,6 +38,9 @@ def deleteServer():
         raise Exception('Unable to delete server')
 
 if __name__ == "__main__":
+    settings = {}
+    with open('settgins.json') as f:
+        settings = json.load(f)
     render()
     saveBackblaze()
     deleteServer()
