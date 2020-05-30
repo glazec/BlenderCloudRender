@@ -7,7 +7,7 @@ import subprocess
 def render():
     frame = os.environ.get('Frame')
     fileName = os.environ.get('BlenderFile')
-    os.system('blender -b {fileName} -o {output}.png -f {frame} > scriptLog'.format(fileName=fileName,frame=frame,output=fileName.split('.'[0])))
+    os.system('blender -b {fileName} -o {output}.png -f {frame} > scriptLog'.format(fileName=fileName,frame=frame,output=fileName.split('.')[0]))
 
 
 # save image
