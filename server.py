@@ -1,14 +1,18 @@
 import os
 import requests
 import sys
+import subprocess
 
 # render
 def render():
-    os.system('blender -b script.blend -o script.png -f 1 > scriptLog')
+    frame = os.environ.get('Frame')
+    fileName = os.environ.get('BlenderFile')
+    os.system('blender -b {fileName} -o {output}.png -f {frame} > scriptLog'.format(fileName=fileName,frame=frame,output=fileName.split('.'[0])))
 
 
 # save image
 def saveBackblaze():
+    print('Uploading File to BackBlaze')
     files = getUploadFile()
     os.system('b2 authorize-account {id} {key}'.format(id=os.environ.get('B2Id'),key=os.environ.get('B2Key')))
     for i in files:
@@ -34,6 +38,6 @@ def deleteServer():
 
 if __name__ == "__main__":
     render()
-    saveBackblaze()
-    deleteServer()
+    # saveBackblaze()
+    # deleteServer()
     
