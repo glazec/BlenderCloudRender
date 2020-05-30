@@ -8,7 +8,7 @@ import json
 def render():
     frame = settings['Frame']
     fileName = settings['BlenderFile']
-    os.system('blender -b {fileName} -o {output} -f {frame} > scriptLog'.format(fileName=fileName,frame=frame,output=fileName.split('.')[0]))
+    os.system('blender -b {fileName} -o {output} -f {frame} > scriptLog'.format(fileName=fileName,frame=frame,output=fileName))
 
 
 # save image
@@ -39,7 +39,7 @@ def deleteServer():
 
 if __name__ == "__main__":
     settings = {}
-    with open('settgins.json') as f:
+    with open('settings.json') as f:
         settings = json.load(f)
     render()
     saveBackblaze()
